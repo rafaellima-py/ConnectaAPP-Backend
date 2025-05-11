@@ -1,2 +1,0 @@
-# ConnectaAPP-Backend
-
