@@ -16,6 +16,7 @@ class UserRegister(BaseModel):
     phone: Optional[str]
     cep: str
     cpf: str  # adicionamos o campo CPF
+    birth_date: str
 
     @validator("email")
     def validate_email(cls, v):
