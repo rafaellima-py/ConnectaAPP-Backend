@@ -9,3 +9,7 @@ async def login(login: UserLogin):
 @auth_router.post("/register")
 async def register(register: UserRegister):
     return {"message": "Register successful", "email": register.email, 'password': register.password}
+
+@auth_router.post("/logout")
+async def logout():
+    return {"message": "Logout successful"}
