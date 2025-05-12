@@ -12,4 +12,4 @@ async def register(register: UserRegister):
 
 @auth_router.post("/logout")
 async def logout():
-    return {"message": "Logout successful!"}
+    return {"message": "Logout successful"}
