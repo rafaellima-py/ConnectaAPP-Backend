@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from models import *
+from scheema import *
 auth_router = APIRouter()
 
 @auth_router.post("/login")
