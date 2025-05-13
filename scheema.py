@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr, validator
+from pydantic import BaseModel, EmailStr, validator, TypeAdapter
 from typing import Optional, Union
 from enum import Enum
 from validate_docbr import CPF  
@@ -27,15 +27,17 @@ class UserRegister(BaseModel):
     rg : Optional[str]
     role: UserRole
     
+    
 
 
     @validator("email")
     def validate_email(cls, v):
         try:
-            _ = EmailStr.validate(v)
+            TypeAdapter(EmailStr).validate_python(v)
         except ValueError:
-            pass  # se não for um email válido, apenas aceita como string
+            pass  # aceita como string mesmo se não for email
         return v
+
 
     @validator("cpf")
     def validate_cpf(cls, v):
