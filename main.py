@@ -16,7 +16,7 @@ app.add_middleware(
 )
 @app.on_event("startup")
 async def startup():
-    cache = redis.from_url('redis://18.118.226.162', port=6379, db=0)
+    cache = redis.from_url('redis://18.118.226.162:6379/0', encoding="utf-8", decode_responses=True)
     await FastAPILimiter.init(cache)
 
 app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth",

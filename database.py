@@ -4,7 +4,7 @@ import datetime
 class DatabaseConfig:
     uri = 'mongodb://18.118.226.162:5003'
     database = 'connecta'
-    collection_user = 'user'
+    collection_user = 'users'
     collection_service = 'service'
     collection_ticket = 'ticket'
 
@@ -36,3 +36,6 @@ class Database:
       user = data.email
       password = data.password
       print(user, password)
+    
+    async def get_user(self, user: str):
+        return await self.user_collection.find_one({'email': user})
