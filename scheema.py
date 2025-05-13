@@ -10,7 +10,7 @@ class UserLogin(BaseModel):
 
 class UserRole(str, Enum):
     admin = "admin"
-    user = "user"
+    user = "funcionario"
     cliente = "cliente"
 
 
@@ -22,14 +22,19 @@ class UserRegister(BaseModel):
     last_name: str
     phone: Optional[str]
     cep: str
-    cpf: str  # adicionamos o campo CPF
-    cargo : Optional[str]
-    rg : Optional[str]
+    cpf: str
+    cargo: Optional[str]
+    rg: Optional[str]
     role: UserRole
-    
-    
+    rua: Optional[str]
+    numero: Optional[str]
+    bairro: Optional[str]
+    cidade: Optional[str]
+    estado: Optional[str]
+    services: Optional[list] = []
+    valor: Optional[float] = 0.0
 
-
+    
     @validator("cpf")
     def validate_cpf(cls, v):
         cpf_validator = CPF()

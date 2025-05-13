@@ -32,6 +32,46 @@ class Database:
         data_copy.update(data_plus)
         await self.user_collection.insert_one(data_copy)
 
+    async def get_info_login(self, user: str):
+        user = await self.get_user(user)
+        if not user:
+            return None 
+      
+        contrato = user['contracts_info']
+        if not contrato:  
+            role = user['role']
+            nome = user['name']
+            sobrenome = user['last_name']
+            cpf = user['cpf']
+            email = user['email']
+            cep = user['cep']
+            rg = user['rg']
+            rua = user['rua']
+            numero = user['numero']
+            bairro = user['bairro']
+            cidade = user['cidade']
+            estado = user['estado']
+            telefone = user['phone']
+            cargo = user['cargo']
+            return {
+                'role': role,
+                'nome': nome,
+                'lastName': sobrenome,
+                'cpf': cpf,
+                'phone': telefone,
+                'cargo': cargo,
+                'email': email,
+                'cep': cep,
+                'rg': rg,
+                'rua': rua,
+                'numero': numero,
+                'bairro': bairro,
+                'cidade': cidade,
+                'estado': estado,
+            }
+        return None
+
+
     async def login_user(self, data: UserLogin):
       user = data.email
       password = data.password

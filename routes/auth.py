@@ -14,8 +14,13 @@ async def login(login: UserLogin):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     
     if user["email"] == login.email and verify_hash(login.password, user["password"]):
-        return JSONResponse(content={'detail':'OK', 'user': user["email"]}, status_code=status.HTTP_200_OK)
-
+        user_info = await db.get_info_login(user["email"])
+        if not user_info:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Falha ao obter informações do usuário")
+        
+        return JSONResponse(content={'detail':'Login realizado com sucesso!', 'user': user_info},	
+        status_code=status.HTTP_200_OK)
+        
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")
 
 @auth_router.post("/register")
@@ -25,6 +30,9 @@ async def register(register: UserRegister):
         password = create_hash(register.password)
         register.password = password
         await db.register_user(register)
-        return JSONResponse(content={'user':register.email, 'password':register.password}, status_code=status.HTTP_200_OK)
+
+        return JSONResponse(content={'detail':'Usuario cadastrado com sucesso!'},	
+        status_code=status.HTTP_200_OK)
+    
     else:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario ja existe!")
