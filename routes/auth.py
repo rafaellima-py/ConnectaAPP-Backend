@@ -11,12 +11,11 @@ async def login(login: UserLogin):
     user = await db.get_user(login.email)
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuario não encontrado")
+    
+    if str(user) == str(login.email) and verify_hash(login.password, user.password):
+        return JSONResponse(content={'user':user.email, 'password':user.password}, status_code=status.HTTP_200_OK)
     else:
-       username_db = user['username']
-       password_db = user['password']
-       password_is_valid = verify_hash(login.password, password_db)
-       if username_db == login.email and password_is_valid:
-           return JSONResponse(content={'user':login.email, 'password':login.password}, status_code=status.HTTP_200_OK)
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")
     
 @auth_router.post("/register")
 async def register(register: UserRegister):

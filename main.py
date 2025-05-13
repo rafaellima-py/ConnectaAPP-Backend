@@ -20,7 +20,7 @@ async def startup():
     await FastAPILimiter.init(cache)
 
 app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth",
-dependencies=[Depends(RateLimiter(times=10, seconds=1))])
+dependencies=[Depends(RateLimiter(times=10, seconds=10))])
 
 
 
