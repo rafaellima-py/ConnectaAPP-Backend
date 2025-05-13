@@ -27,4 +27,4 @@ async def register(register: UserRegister):
         await db.register_user(register)
         return JSONResponse(content={'user':register.email, 'password':register.password}, status_code=status.HTTP_200_OK)
     else:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario ja existe")
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Usuario ja existe!")
