@@ -14,7 +14,7 @@ async def login(login: UserLogin):
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     
     if user["email"] == login.email and verify_hash(login.password, user["password"]):
-        return JSONResponse(content={'detail':'OK', user: user["email"]}, status_code=status.HTTP_200_OK)
+        return JSONResponse(content={'detail':'OK', 'user': user["email"]}, status_code=status.HTTP_200_OK)
 
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")
 
