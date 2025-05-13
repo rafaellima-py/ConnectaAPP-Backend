@@ -30,15 +30,6 @@ class UserRegister(BaseModel):
     
 
 
-    @validator("email")
-    def validate_email(cls, v):
-        try:
-            TypeAdapter(EmailStr).validate_python(v)
-        except ValueError:
-            pass  # aceita como string mesmo se não for email
-        return v
-
-
     @validator("cpf")
     def validate_cpf(cls, v):
         cpf_validator = CPF()
