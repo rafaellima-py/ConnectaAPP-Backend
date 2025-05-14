@@ -35,7 +35,7 @@ class Database:
     async def get_info_login(self, user: str):
         user = await self.get_user(user)
         if not user:
-            return None 
+            None 
       
         contrato = user['contracts_info']
         if not contrato:  
@@ -56,6 +56,8 @@ class Database:
             contratos = user['contracts_info']
             primeiro_login = user['primeiro_login']
             return {
+                'sucess': True,
+                'user':{
                 "contratos": contratos,
                 'role': role,
                 'nome': nome,
@@ -71,8 +73,8 @@ class Database:
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
-                "is_first_login": primeiro_login
-            }
+                "first_login": primeiro_login
+            }}
         return None
 
 
@@ -83,3 +85,11 @@ class Database:
     
     async def get_user(self, user: str):
         return await self.user_collection.find_one({'email': user})
+    
+    async def add_user_service(self, user: str, service: dict):
+        user = await self.get_user(user)
+        if not user:
+            return None
+        await self.user_collection.update_one({'email': user['email']}, {'$push': {'services': service}})
+        return True
+    
