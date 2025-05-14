@@ -18,7 +18,7 @@ async def login(login: UserLogin):
         if not user_info:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Falha ao obter informações do usuário")
         
-        return JSONResponse(content={'detail':'Login realizado com sucesso!', 'user': user_info},	
+        return JSONResponse(content=user_info,	
         status_code=status.HTTP_200_OK)
         
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")

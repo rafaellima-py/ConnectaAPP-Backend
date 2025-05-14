@@ -73,7 +73,7 @@ class Database:
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
-                "first_login": primeiro_login
+                "is_first_login": primeiro_login
             }}
         return None
 
