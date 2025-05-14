@@ -33,6 +33,7 @@ class UserRegister(BaseModel):
     estado: Optional[str]
     services: Optional[list] = []
     valor: Optional[float] = 0.0
+    primeiro_login: Optional[bool] = True
 
     
     @validator("cpf")

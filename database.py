@@ -53,7 +53,10 @@ class Database:
             estado = user['estado']
             telefone = user['phone']
             cargo = user['cargo']
+            contratos = user['contracts_info']
+            primeiro_login = user['primeiro_login']
             return {
+                "contratos": contratos,
                 'role': role,
                 'nome': nome,
                 'lastName': sobrenome,
@@ -68,6 +71,7 @@ class Database:
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
+                "is_first_login": primeiro_login
             }
         return None
 
