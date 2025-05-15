@@ -18,6 +18,7 @@ async def login(login: UserLogin):
         if not user_info:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Falha ao obter informações do usuário")
         
+ 
         return JSONResponse(content=user_info,	
         status_code=status.HTTP_200_OK)
         
