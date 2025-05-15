@@ -31,7 +31,7 @@ async def register(register: UserRegister):
         register.password = password
         await db.register_user(register)
 
-        return JSONResponse(content={'detail':'Usuario cadastrado com sucesso'},	
+        return JSONResponse(content={'sucess':True,'detail':'Usuario cadastrado com sucesso'},	
         status_code=status.HTTP_200_OK)
     
     else:

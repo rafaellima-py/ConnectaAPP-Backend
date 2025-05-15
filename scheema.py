@@ -31,7 +31,6 @@ class UserRegister(BaseModel):
     bairro: Optional[str]
     cidade: Optional[str]
     estado: Optional[str]
-    servicos  : Optional[list] = []
     valor: Optional[float] = 0.0
     primeiro_login: Optional[bool] = True
 

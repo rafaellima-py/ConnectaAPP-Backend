@@ -55,7 +55,7 @@ class Database:
             cargo = user['cargo']
             contratos = user['contracts_info']
             primeiro_login = user['primeiro_login']
-            return {
+            response = {
                 'sucess': True,
                 'user':{
                 "contratos": contratos,
@@ -73,8 +73,10 @@ class Database:
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
+                'servicos': [],
                 "is_first_login": primeiro_login
             }}
+            return response
         return None
 
 
