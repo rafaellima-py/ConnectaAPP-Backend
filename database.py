@@ -25,9 +25,11 @@ class Database:
         data_plus ={
             'tickets': [],
             'contracts_info': [],
-            'services': [],
+            'projetos': [],
+            'servicos': [],
             'status': 'ativo',
             'created_at': datetime.datetime.now(),
+            'periodo': None,
         }
         data_copy.update(data_plus)
         await self.user_collection.insert_one(data_copy)
@@ -54,6 +56,8 @@ class Database:
             telefone = user['phone']
             cargo = user['cargo']
             contratos = user['contracts_info']
+            projetos = user['projetos']
+            periodo = user['periodo']
             primeiro_login = user['primeiro_login']
             response = {
                 'sucess': True,
@@ -73,7 +77,8 @@ class Database:
                 'bairro': bairro,
                 'cidade': cidade,
                 'estado': estado,
-                'servicos': [],
+                'projetos': projetos,
+                'periodo': periodo,
                 "is_first_login": primeiro_login
             }}
             return response
@@ -95,3 +100,9 @@ class Database:
         await self.user_collection.update_one({'email': user['email']}, {'$push': {'services': service}})
         return True
     
+    async def add_user_projeto(self, user: str, projeto: list):
+        user = await self.get_user(user)
+        if not user:
+            return None
+        await self.user_collection.update_one({'email': user['email']}, {'$push': {'servicos': projeto}})
+        return True
