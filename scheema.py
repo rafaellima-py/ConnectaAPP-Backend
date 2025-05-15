@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, validator, TypeAdapter
 from typing import Optional, Union
 from enum import Enum
-from validate_docbr import CPF  
+from validate_docbr import CPF, CNPJ
 
 class UserLogin(BaseModel):
     email: Union[EmailStr, str]
@@ -39,6 +39,7 @@ class UserRegister(BaseModel):
     @validator("cpf")
     def validate_cpf(cls, v):
         cpf_validator = CPF()
-        if not cpf_validator.validate(v):
-            raise ValueError("CPF inválido")
+        cnpj_validator = CNPJ()
+        if not cpf_validator.validate(v) and not cnpj_validator.validate(v):
+            raise ValueError("CPF ou CNPJ inválido")
         return v
