@@ -32,7 +32,7 @@ class UserRegister(BaseModel):
     cidade: Optional[str]
     estado: Optional[str]
     valor: Optional[float] = 0.0
-    servicos = Optional[list] = []
+    servicos = Optional[list] 
     primeiro_login: Optional[bool] = True
 
     
