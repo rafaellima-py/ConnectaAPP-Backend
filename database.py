@@ -58,6 +58,7 @@ class Database:
             contratos = user['contracts_info']
             projetos = user['projetos']
             periodo = user['periodo']
+            servicos = user['servicos']
             primeiro_login = user['primeiro_login']
             response = {
                 'sucess': True,
@@ -78,6 +79,7 @@ class Database:
                 'cidade': cidade,
                 'estado': estado,
                 'projetos': projetos,
+                'servicos': servicos,
                 'periodo': periodo,
                 "is_first_login": primeiro_login
             }}

@@ -15,8 +15,7 @@ async def login(login: UserLogin):
     
     if user["email"] == login.email and verify_hash(login.password, user["password"]):
         user_info = await db.get_info_login(user["email"])
-        if user_info['role'] == 'cliente':
-            pass
+
         if not user_info:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Falha ao obter informações do usuário")
         
