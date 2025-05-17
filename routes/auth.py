@@ -24,7 +24,7 @@ async def login(login: UserLogin):
         
         token = create_token(data={"sub": user["email"], 'role': user["role"]})
         
-        return JSONResponse(content={'sucess':True,'detail':'Login realizado',
+        return JSONResponse(content={'success':True,'detail':'Login realizado',
                                      'token': token, 'token_type': 'Bearer'},
         status_code=status.HTTP_200_OK)
         
