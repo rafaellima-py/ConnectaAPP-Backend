@@ -12,6 +12,7 @@ auth_router = APIRouter()
 @auth_router.post("/login")
 async def login(login: UserLogin):
     user = await db.get_user(login.username)
+    
     if not user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
     

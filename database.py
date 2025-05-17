@@ -93,7 +93,7 @@ class Database:
       print(user, password)
     
     async def get_user(self, user: str):
-        return await self.user_collection.find_one({'email': user})
+        return await self.user_collection.find_one({'username': user})
     
     async def add_user_service(self, user: str, service: dict):
         user = await self.get_user(user)
