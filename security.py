@@ -12,7 +12,7 @@ pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
 class AuthConfig:
     SECRET_KEY = "48IKPH25.P$@#dwqX"
     ALGORITHM = "HS256"
-    ACCESS_TOKEN_EXPIRE_MINUTES = 60*24*60
+    ACCESS_TOKEN_EXPIRE_MINUTES = 60*24*360
     REFRESH_TOKEN_EXPIRE_MINUTES = 30
 
 def create_hash(password: str) -> str:
