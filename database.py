@@ -88,7 +88,7 @@ class Database:
 
 
     async def login_user(self, data: UserLogin):
-      user = data.email
+      user = data.username
       password = data.password
       print(user, password)
     

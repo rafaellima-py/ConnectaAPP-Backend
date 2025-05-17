@@ -4,7 +4,7 @@ from enum import Enum
 from validate_docbr import CPF, CNPJ
 
 class UserLogin(BaseModel):
-    email: Union[EmailStr, str]
+    username:  str
     password: str
     
 
@@ -15,9 +15,9 @@ class UserRole(str, Enum):
 
 
 class UserRegister(BaseModel):
-    email: Union[EmailStr, str]
     username: str 
     password: str
+    email: Union[EmailStr]
     name: str
     last_name: str
     phone: Optional[str]

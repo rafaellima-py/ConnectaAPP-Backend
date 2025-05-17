@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from routes import auth
+from routes import auth, infos
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 import redis.asyncio as redis
@@ -19,9 +19,8 @@ async def startup():
     cache = redis.from_url('redis://18.118.226.162:6379/0', encoding="utf-8", decode_responses=True)
     await FastAPILimiter.init(cache)
 
-app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth",
-dependencies=[Depends(RateLimiter(times=10, seconds=10))])
-
+app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth")
+app.include_router(infos.info_router, tags=["Informações do usuario"], prefix="/info")
 
 
 @app.get("/")
