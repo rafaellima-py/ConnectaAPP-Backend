@@ -61,7 +61,7 @@ class Database:
             servicos = user['servicos']
             primeiro_login = user['primeiro_login']
             response = {
-                'sucess': True,
+                'success': True,
                 'user':{
                 "contratos": contratos,
                 'role': role,

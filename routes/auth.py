@@ -39,7 +39,7 @@ async def register(register: UserRegister, token: str = Depends(token_is_admin))
         register.password = password
         await db.register_user(register)
 
-        return JSONResponse(content={'sucess':True,'detail':'Usuario cadastrado com sucesso'},	
+        return JSONResponse(content={'':True,'detail':'Usuario cadastrado com successo'},	
         status_code=status.HTTP_200_OK)
     
     else:
