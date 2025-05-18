@@ -32,7 +32,7 @@ async def login(login: UserLogin):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")
 
 @auth_router.post("/register", responses=register_response)
-async def register(register: UserRegister, token: str = Depends(token_is_admin)):
+async def register(register: UserRegister):
     user = await db.get_user(register.email)
     if not user:
         
