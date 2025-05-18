@@ -12,6 +12,7 @@ dependencies = [
     "passlib[argon2]>=1.7.4",
     "pydantic[email]>=2.11.4",
     "python-jose>=3.4.0",
+    "python-multipart>=0.0.20",
     "redis>=6.0.0",
     "uvicorn>=0.34.2",
     "validate-docbr>=1.10.0",

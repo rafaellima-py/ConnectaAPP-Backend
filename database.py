@@ -115,3 +115,11 @@ class Database:
             return None
         await self.user_collection.update_one({'username': user['username']}, {'$set': {'primeiro_login': False}})
         return True
+    async def add_contract_user(self, user: str, contract: dict):
+        user = await self.get_user(user)
+        if not user:
+            return None
+        await self.user_collection.update_one({'email': user['email']}, {'$push': {'contracts_info': contract}})
+        return True
+    
+    
