@@ -4,11 +4,11 @@ from scheema import *
 from database import Database
 from fastapi.security import OAuth2PasswordBearer
 from security import *
-
+from docs.info_docs import *
 db = Database()
 info_router = APIRouter()
 
-@info_router.get("/get_user_info")
+@info_router.get("/get_user_info", responses=info_user_basic_response)
 async def get_user_info(token: str = Depends(get_current_user)):
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
