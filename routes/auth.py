@@ -23,7 +23,7 @@ async def login(login: UserLogin):
         if not user_info:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Falha ao obter informações do usuário")
         
-        token = create_token(data={"sub": user["email"], 'role': user["role"]})
+        token = create_token(data={"sub": user["username"], 'role': user["role"]})
         
         return JSONResponse(content={'success':True,'detail':'Login realizado',
                                      'token': token, 'token_type': 'Bearer'},

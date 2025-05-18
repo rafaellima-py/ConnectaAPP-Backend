@@ -30,8 +30,9 @@ def create_token(data: dict, expires_delta = AuthConfig.ACCESS_TOKEN_EXPIRE_MINU
     return encoded_jwt
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login", description="Envie um Authorization: Bearer token")
 async def get_current_user(token: str = Depends(oauth2_scheme)):
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Token inválido ou expirado",
@@ -40,11 +41,16 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, AuthConfig.SECRET_KEY, algorithms=[AuthConfig.ALGORITHM])
         user_email: str = payload.get("sub")
+    
         if user_email is None:
             raise credentials_exception
         return user_email
     except JWTError:
         raise credentials_exception
+    
+
+
+
     
 async def token_is_admin(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -61,4 +67,4 @@ async def token_is_admin(token: str = Depends(oauth2_scheme)):
             return False
     except JWTError:
         raise credentials_exception
-    
+  
