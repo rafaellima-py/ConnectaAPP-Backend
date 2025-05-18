@@ -4,12 +4,13 @@ from scheema import *
 from database import Database
 from fastapi.security import OAuth2PasswordBearer
 from security import *
+from docs.auth_docs import *
 
 db = Database()
 auth_router = APIRouter()
 
 
-@auth_router.post("/login")
+@auth_router.post("/login", responses=auth_login_response)
 async def login(login: UserLogin):
     user = await db.get_user(login.username)
     
@@ -30,7 +31,7 @@ async def login(login: UserLogin):
         
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Usuário ou senha inválidos")
 
-@auth_router.post("/register")
+@auth_router.post("/register", responses=register_response)
 async def register(register: UserRegister, token: str = Depends(token_is_admin)):
     user = await db.get_user(register.email)
     if not user:
