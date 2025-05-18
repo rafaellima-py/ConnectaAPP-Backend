@@ -108,3 +108,10 @@ class Database:
             return None
         await self.user_collection.update_one({'email': user['email']}, {'$push': {'servicos': projeto}})
         return True
+    
+    async def desable_first_login(self, user: str):
+        user = await self.get_user(user)
+        if not user:
+            return None
+        await self.user_collection.update_one({'username': user['username']}, {'$set': {'primeiro_login': False}})
+        return True

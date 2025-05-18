@@ -21,4 +21,4 @@ async def get_user_info(token: str = Depends(get_current_user)):
     
     return JSONResponse(content={'sucess':True,'detail':'Usuario encontrado com sucesso', 'user_info': user_info},
                          status_code=status.HTTP_200_OK)
-                        
+

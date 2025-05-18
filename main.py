@@ -1,5 +1,5 @@
 from fastapi import FastAPI, Depends
-from routes import auth, infos
+from routes import auth, infos, funcs
 from fastapi_limiter import FastAPILimiter
 from fastapi_limiter.depends import RateLimiter
 import redis.asyncio as redis
@@ -21,7 +21,7 @@ async def startup():
 
 app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth")
 app.include_router(infos.info_router, tags=["Informações do usuario"], prefix="/info")
-
+app.include_router(funcs.functions_router, tags=["Funções do usuario"], prefix="/funcs")
 
 @app.get("/")
 async def root():
