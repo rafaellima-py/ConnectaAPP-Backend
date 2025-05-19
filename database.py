@@ -1,6 +1,7 @@
 from motor.motor_asyncio import AsyncIOMotorClient
 from scheema import *
 import datetime
+import asyncio
 class DatabaseConfig:
     uri = 'mongodb://18.118.226.162:5003'
     database = 'connecta'
@@ -36,31 +37,28 @@ class Database:
 
     async def get_info_login(self, user: str):
         user = await self.get_user(user)
-        if not user:
-            None 
-      
-        contrato = user['contracts_info']
-        if not contrato:  
-            role = user['role']
-            nome = user['name']
-            sobrenome = user['last_name']
-            cpf = user['cpf']
-            email = user['email']
-            cep = user['cep']
-            rg = user['rg']
-            rua = user['rua']
-            numero = user['numero']
-            bairro = user['bairro']
-            cidade = user['cidade']
-            estado = user['estado']
-            telefone = user['phone']
-            cargo = user['cargo']
-            contratos = user['contracts_info']
-            projetos = user['projetos']
-            periodo = user['periodo']
-            servicos = user['servicos']
-            primeiro_login = user['primeiro_login']
-            response = {
+        if  user == None:
+            return None  
+        role = user['role']
+        nome = user['name']
+        sobrenome = user['last_name']
+        cpf = user['cpf']
+        email = user['email']
+        cep = user['cep']
+        rg = user['rg']
+        rua = user['rua']
+        numero = user['numero']
+        bairro = user['bairro']
+        cidade = user['cidade']
+        estado = user['estado']
+        telefone = user['phone']
+        cargo = user['cargo']
+        contratos = user['contracts_info']
+        projetos = user['projetos']
+        periodo = user['periodo']
+        servicos = user['servicos']
+        primeiro_login = user['primeiro_login']
+        response = {
                 'success': True,
                 'user':{
                 "contratos": contratos,
@@ -83,8 +81,8 @@ class Database:
                 'periodo': periodo,
                 "is_first_login": primeiro_login
             }}
-            return response
-        return None
+        return response
+        
 
 
     async def login_user(self, data: UserLogin):
@@ -92,8 +90,12 @@ class Database:
       password = data.password
       print(user, password)
     
-    async def get_user(self, user: str):
-        return await self.user_collection.find_one({'username': user})
+    async def get_user(self, username: str):
+        user = await self.user_collection.find_one({'username': username})
+        
+        if not user:
+            return None
+        return user
     
     async def add_user_service(self, user: str, service: dict):
         user = await self.get_user(user)
@@ -121,4 +123,3 @@ class Database:
             return None
         await self.user_collection.update_one({'username': user['username']}, {'$push': {'contracts_info': contract}})
         return True
-    
