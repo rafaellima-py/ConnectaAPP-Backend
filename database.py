@@ -99,14 +99,14 @@ class Database:
         user = await self.get_user(user)
         if not user:
             return None
-        await self.user_collection.update_one({'email': user['email']}, {'$push': {'services': service}})
+        await self.user_collection.update_one({'username': user['username']}, {'$push': {'services': service}})
         return True
     
     async def add_user_projeto(self, user: str, projeto: list):
         user = await self.get_user(user)
         if not user:
             return None
-        await self.user_collection.update_one({'email': user['email']}, {'$push': {'servicos': projeto}})
+        await self.user_collection.update_one({'username': user['username']}, {'$push': {'servicos': projeto}})
         return True
     
     async def desable_first_login(self, user: str):
@@ -119,7 +119,6 @@ class Database:
         user = await self.get_user(user)
         if not user:
             return None
-        await self.user_collection.update_one({'email': user['email']}, {'$push': {'contracts_info': contract}})
+        await self.user_collection.update_one({'username': user['username']}, {'$push': {'contracts_info': contract}})
         return True
-    
     
