@@ -49,6 +49,8 @@ async def accept_contract(
     })
 
     return {"success": True, "detail": "Contrato enviado com sucesso"}
+
+
 @functions_router.post('/get_all_tickets')
 async def get_all_tickets(token: str = Depends(token_is_admin)):
     tickets = await db.get_all_tickets()
