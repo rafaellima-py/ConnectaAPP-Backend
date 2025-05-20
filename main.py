@@ -22,7 +22,3 @@ async def startup():
 app.include_router(auth.auth_router, tags=["Autenticar usuario"], prefix="/auth")
 app.include_router(infos.info_router, tags=["Informações do usuario"], prefix="/info")
 app.include_router(funcs.functions_router, tags=["Funções do usuario"], prefix="/funcs")
-
-@app.get("/")
-async def root():
-    return {"message": "Hello World"}
