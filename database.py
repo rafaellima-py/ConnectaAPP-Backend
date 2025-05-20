@@ -108,7 +108,7 @@ class Database:
         user = await self.get_user(user)
         if not user:
             return None
-        await self.user_collection.update_one({'username': user['username']}, {'$push': {'servicos': projeto}})
+        await self.user_collection.update_one({'username': user['username']}, {'$push': {'projetos': projeto}})
         return True
     
     async def desable_first_login(self, user: str):
@@ -123,3 +123,9 @@ class Database:
             return None
         await self.user_collection.update_one({'username': user['username']}, {'$push': {'contracts_info': contract}})
         return True
+
+    async def get_all_tickets(self):
+        tickets = await self.ticket_collection.find().to_list(length=None)
+        return tickets
+
+print(asyncio.run(Database().get_all_tickets()))
