@@ -127,5 +127,3 @@ class Database:
     async def get_all_tickets(self):
         tickets = await self.ticket_collection.find().to_list(length=None)
         return tickets
-
-print(asyncio.run(Database().get_all_tickets()))
