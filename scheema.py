@@ -28,7 +28,6 @@ class UserRegister(BaseModel):
     role: UserRole
     rua: Optional[str]
     razaoSocial: Optional[str]
-    inscricaoEstadual: Optional[str]
     numero: Optional[str]
     bairro: Optional[str]
     cidade: Optional[str]
