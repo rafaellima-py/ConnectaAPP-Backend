@@ -65,3 +65,43 @@ async def get_all_services(token: str = Depends(token_is_admin)):
 async def get_all_users(token: str = Depends(token_is_admin)):
     users = await db.get_all_users()
     return users
+
+@functions_router.post('/create_ticket')
+async def create_ticket(ticket: Ticket, token: str = Depends(get_current_user)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
+    elif await db.create_ticket(token, ticket):
+        return JSONResponse(content={'sucess':True,'detail':'Ticket criado com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
+
+@functions_router.delete('/delete_ticket')
+async def delete_ticket(id: str, token: str = Depends(get_current_user)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
+    elif await db.delete_ticket(id):
+        return JSONResponse(content={'sucess':True,'detail':'Ticket excluído com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
+
+@functions_router.post('/create_service')
+async def create_service(service: Service, token: str = Depends(get_current_user)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
+    elif await db.create_service(service):
+        return JSONResponse(content={'sucess':True,'detail':'Serviço criado com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
+
+@functions_router.delete('/delete_service')
+async def delete_service(service_id: str, token: str = Depends(get_current_user)):
+    if not token:
+        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
+    elif await db.delete_service(service_id):
+        return JSONResponse(content={'sucess':True,'detail':'Serviço excluído com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')

@@ -2,6 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from scheema import *
 import datetime
 import asyncio
+import random
 class DatabaseConfig:
     uri = 'mongodb://18.118.226.162:5003'
     database = 'connecta'
@@ -131,8 +132,60 @@ class Database:
     async def get_all_services(self):
         services = await self.service_collection.find().to_list(length=None)
         return services
-    
+
     async def get_all_users(self):
         users = await self.user_collection.find().to_list(length=None)
         return users
+
+    async def create_ticket(
+        self,
+        username: str,
+        nome: str,
+        email: str,
+        titulo: str,
+        mensagem: str,
+        status: str = "pendente",  # valor padrão
+        data_criacao: datetime = None  # se não passar, usa agora
+):
+        idtic = 'tk'+str(random.randint(1000, 89999))
+        ticket_data = {
+            "user_info": {
+                "id": idtic,
+                "username": username,
+                'nome': nome,
+                "email": email
+            },
+            "ticket": {
+                "titulo": titulo,
+                "mensagem": mensagem,
+                "status": status,
+                "data_criacao":  datetime.datetime.utcnow()
+            }
+        }
+
+        result = await self.ticket_collection.insert_one(ticket_data)
+        # update em user tickets
+        #await self.user_collection.update_one
+
+        return True if result.acknowledged else False
     
+    async def delete_ticket(self, id: str):
+        result = await self.ticket_collection.delete_one({"user_info.id": id})
+        return True if result.deleted_count > 0 else False
+    
+    async def create_service(self, nome: str, descricao: str, valor: float, periodo: str, status: str):
+        service_data = {
+            'id': 'sv' + str(random.randint(1000, 89999)),
+            "nome": nome,
+            "descricao": descricao,
+            "valor": valor,
+            "periodo": periodo,
+            "status": status
+        }
+        result = await self.service_collection.insert_one(service_data)
+        return True if result.acknowledged else False
+
+    async def delete_service(self, service_id: str):
+        result = await self.service_collection.delete_one({"id": service_id})
+        return True if result.deleted_count > 0 else False
+

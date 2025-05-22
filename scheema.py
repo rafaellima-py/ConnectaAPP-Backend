@@ -37,7 +37,21 @@ class UserRegister(BaseModel):
     projetos: Optional[list] = None 
     primeiro_login: Optional[bool] = True
 
-    
+class Ticket(BaseModel):
+    nome: str
+    username: str
+    email: str
+    titulo: str
+    mensagem: str
+    status: str
+
+class Service(BaseModel):
+    nome: str
+    descricao: str
+    valor: float
+    periodo: str
+
+
     @validator("cpf")
     def validate_cpf(cls, v):
         cpf_validator = CPF()
