@@ -36,6 +36,13 @@ class UserRegister(BaseModel):
     servicos: Optional[list] = None
     projetos: Optional[list] = None 
     primeiro_login: Optional[bool] = True
+    @validator("cpf")
+    def validate_cpf(cls, v):
+        cpf_validator = CPF()
+        cnpj_validator = CNPJ()
+        if not cpf_validator.validate(v) and not cnpj_validator.validate(v):
+            raise ValueError("CPF ou CNPJ inválido")
+        return v
 
 class Ticket(BaseModel):
     nome: str
@@ -51,11 +58,3 @@ class Service(BaseModel):
     valor: float
     periodo: str
 
-
-    @validator("cpf")
-    def validate_cpf(cls, v):
-        cpf_validator = CPF()
-        cnpj_validator = CNPJ()
-        if not cpf_validator.validate(v) and not cnpj_validator.validate(v):
-            raise ValueError("CPF ou CNPJ inválido")
-        return v
