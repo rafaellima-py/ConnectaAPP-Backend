@@ -55,3 +55,13 @@ async def accept_contract(
 async def get_all_tickets(token: str = Depends(token_is_admin)):
     tickets = await db.get_all_tickets()
     return tickets
+
+@functions_router.post('/get_all_services')
+async def get_all_services(token: str = Depends(token_is_admin)):
+    services = await db.get_all_services()
+    return services
+
+@functions_router.post('/get_all_users')
+async def get_all_users(token: str = Depends(token_is_admin)):
+    users = await db.get_all_users()
+    return users

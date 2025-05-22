@@ -127,3 +127,12 @@ class Database:
     async def get_all_tickets(self):
         tickets = await self.ticket_collection.find().to_list(length=None)
         return tickets
+    
+    async def get_all_services(self):
+        services = await self.service_collection.find().to_list(length=None)
+        return services
+    
+    async def get_all_users(self):
+        users = await self.user_collection.find().to_list(length=None)
+        return users
+    
