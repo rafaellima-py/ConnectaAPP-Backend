@@ -173,14 +173,14 @@ class Database:
         result = await self.ticket_collection.delete_one({"user_info.id": id})
         return True if result.deleted_count > 0 else False
     
-    async def create_service(self, nome: str, descricao: str, valor: float, periodo: str, status: str):
+    async def create_service(self, nome: str, descricao: str, valor: float, periodo: str):
         service_data = {
             'id': 'sv' + str(random.randint(1000, 89999)),
             "nome": nome,
             "descricao": descricao,
             "valor": valor,
             "periodo": periodo,
-            "status": status
+            "status": 'pendente'
         }
         result = await self.service_collection.insert_one(service_data)
         return True if result.acknowledged else False

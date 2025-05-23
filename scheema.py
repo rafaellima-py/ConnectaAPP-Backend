@@ -50,7 +50,7 @@ class Ticket(BaseModel):
     email: str
     titulo: str
     mensagem: str
-    status: str
+    
 
 class Service(BaseModel):
     nome: str
