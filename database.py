@@ -141,3 +141,9 @@ class Database:
         result = await self.service_collection.delete_one({"id": service_id})
         return result.deleted_count > 0
 
+    async def add_service_in_user(self, user: str, service_id: str):
+        result = await self.user_collection.update_one({'username': user}, {'$push': {'servicos': service_id}})
+        return result.modified_count > 0
+    async def remove_service_in_user(self, user: str, service_id: str):
+        result = await self.user_collection.update_one({'username': user}, {'$pull': {'servicos': service_id}})
+        return result.modified_count > 0

@@ -67,7 +67,7 @@ async def get_all_services(token: str = Depends(token_is_admin)):
     return services
 
 @functions_router.post('/get_all_users')
-async def get_all_users(type: UserRole):
+async def get_all_users(type: UserRole, token: str =  Depends(token_is_admin)):
     users = await db.get_all_users(type)
 
     for user in users:
@@ -132,3 +132,18 @@ async def delete_service(service_id: str, token: str = Depends(get_current_user)
 
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Serviço não encontrado')
 
+@functions_router.post('/add_service_in_user')
+async def add_service_in_user(username: str, service_id: str):
+    if await db.add_service_in_user(username, service_id):
+        return JSONResponse(content={'sucess':True,'detail':'Serviço adicionado com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Falha ao atribuir serviço ao usuario')
+
+@functions_router.post('/remove_service_in_user')
+async def remove_service_in_user(username: str, service_id: str):
+    if await db.remove_service_in_user(username, service_id):
+        return JSONResponse(content={'sucess':True,'detail':'Serviço removido com sucesso'},
+                         status_code=status.HTTP_200_OK)
+    
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Falha ao remover serviço do usuario')
