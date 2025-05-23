@@ -4,6 +4,7 @@ from scheema import *
 from database import Database
 from fastapi.security import OAuth2PasswordBearer
 from security import *
+import base64
 
 db = Database()
 functions_router = APIRouter()
@@ -54,6 +55,8 @@ async def accept_contract(
 @functions_router.post('/get_all_tickets')
 async def get_all_tickets(token: str = Depends(token_is_admin)):
     tickets = await db.get_all_tickets()
+    for item in tickets:
+        item['_id'] = str(item['_id'])
     return tickets
 
 @functions_router.post('/get_all_services')
@@ -64,31 +67,48 @@ async def get_all_services(token: str = Depends(token_is_admin)):
     return services
 
 @functions_router.post('/get_all_users')
-async def get_all_users(token: str = Depends(token_is_admin)):
-    users = await db.get_all_users()
-    for item in users:
-        item['_id'] = str(item['_id'])
+async def get_all_users(type: UserRole):
+    users = await db.get_all_users(type)
+
+    for user in users:
+        user['_id'] = str(user['_id'])
+        
+        for contract in user.get("contracts_info", []):
+            if "contrato" in contract and isinstance(contract["contrato"], bytes):
+                contract["contrato"] = base64.b64encode(contract["contrato"]).decode('utf-8')
+            if "assinatura" in contract and isinstance(contract["assinatura"], bytes):
+                contract["assinatura"] = base64.b64encode(contract["assinatura"]).decode('utf-8')
+
     return users
 
+    return users
 @functions_router.post('/create_ticket')
 async def create_ticket(ticket: Ticket, token: str = Depends(get_current_user)):
+    username = ticket.username
+    nome = ticket.nome
+    email = ticket.email
+    titulo = ticket.titulo
+    mensagem = ticket.mensagem
     if not token:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
-    elif await db.create_ticket(token, ticket):
+    elif await db.create_ticket(username=username, nome=nome,
+                                email=email, titulo=titulo, mensagem=mensagem):
         return JSONResponse(content={'sucess':True,'detail':'Ticket criado com sucesso'},
                          status_code=status.HTTP_200_OK)
     
     raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
 
-@functions_router.delete('/delete_ticket/{id}')
+@functions_router.delete('/delete_ticket')
 async def delete_ticket(id: str, token: str = Depends(get_current_user)):
-    if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
-    elif await db.delete_ticket(id):
-        return JSONResponse(content={'sucess':True,'detail':'Ticket excluído com sucesso'},
-                         status_code=status.HTTP_200_OK)
-    
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
+    deleted = await db.delete_ticket(id)
+    if deleted:
+        return JSONResponse(content={
+            'success': True,
+            'detail': 'Ticket excluído com sucesso'
+        }, status_code=status.HTTP_200_OK)
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Ticket não encontrado')
+
+
 
 @functions_router.post('/create_service')
 async def create_service(service: Service, token: str = Depends(get_current_user)):
@@ -102,10 +122,13 @@ async def create_service(service: Service, token: str = Depends(get_current_user
 
 @functions_router.delete('/delete_service')
 async def delete_service(service_id: str, token: str = Depends(get_current_user)):
-    if not token:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token inválido")
-    elif await db.delete_service(service_id):
-        return JSONResponse(content={'sucess':True,'detail':'Serviço excluído com sucesso'},
-                         status_code=status.HTTP_200_OK)
+    deleted = await db.delete_service(service_id)
     
-    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Usuário não encontrado')
+    if deleted:
+        return JSONResponse(content={
+            'success': True,
+            'detail': 'Serviço excluído com sucesso'
+        }, status_code=status.HTTP_200_OK)
+
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Serviço não encontrado')
+

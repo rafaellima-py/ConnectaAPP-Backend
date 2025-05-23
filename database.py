@@ -36,55 +36,6 @@ class Database:
         data_copy.update(data_plus)
         await self.user_collection.insert_one(data_copy)
 
-    async def get_info_login(self, user: str):
-        user = await self.get_user(user)
-        if  user == None:
-            return None  
-        role = user['role']
-        nome = user['name']
-        sobrenome = user['last_name']
-        cpf = user['cpf']
-        email = user['email']
-        cep = user['cep']
-        rg = user['rg']
-        rua = user['rua']
-        numero = user['numero']
-        bairro = user['bairro']
-        cidade = user['cidade']
-        estado = user['estado']
-        telefone = user['phone']
-        cargo = user['cargo']
-        contratos = user['contracts_info']
-        projetos = user['projetos']
-        periodo = user['periodo']
-        servicos = user['servicos']
-        primeiro_login = user['primeiro_login']
-        response = {
-                'success': True,
-                'user':{
-                "contratos": contratos,
-                'role': role,
-                'nome': nome,
-                'lastName': sobrenome,
-                'cpf': cpf,
-                'phone': telefone,
-                'cargo': cargo,
-                'email': email,
-                'cep': cep,
-                'rg': rg,
-                'rua': rua,
-                'numero': numero,
-                'bairro': bairro,
-                'cidade': cidade,
-                'estado': estado,
-                'projetos': projetos,
-                'servicos': servicos,
-                'periodo': periodo,
-                "is_first_login": primeiro_login
-            }}
-        return response
-        
-
 
     async def login_user(self, data: UserLogin):
       user = data.username
@@ -133,8 +84,8 @@ class Database:
         services = await self.service_collection.find().to_list(length=None)
         return services
 
-    async def get_all_users(self):
-        users = await self.user_collection.find().to_list(length=None)
+    async def get_all_users(self, type: str):
+        users = await self.user_collection.find({'role': type}).to_list(length=None)
         return users
 
     async def create_ticket(
@@ -184,8 +135,9 @@ class Database:
         }
         result = await self.service_collection.insert_one(service_data)
         return True if result.acknowledged else False
-
+    
+    
     async def delete_service(self, service_id: str):
         result = await self.service_collection.delete_one({"id": service_id})
-        return True if result.deleted_count > 0 else False
+        return result.deleted_count > 0
 
