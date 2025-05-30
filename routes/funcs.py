@@ -30,23 +30,22 @@ async def accept_contract(
     files: list[UploadFile] = File(...)
 ):
     contrato = None
-    assinatura = None
+   
 
     for file in files:
         content = await file.read()
         
         if file.filename.endswith('.pdf'):
             contrato = content
-        elif file.filename.endswith('.png'):
-            assinatura = content
 
-    if not contrato or not assinatura:
+
+    if not contrato:
         raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Envie um contrato (.pdf) e uma assinatura (.png)")
 
     # Supondo que db.add_contract_user seja async:
     await db.add_contract_user(token, contract={
         'contrato': contrato,
-        'assinatura': assinatura
+       
     })
 
     return {"success": True, "detail": "Contrato enviado com sucesso"}
@@ -81,7 +80,7 @@ async def get_all_users(type: UserRole, token: str =  Depends(token_is_admin)):
 
     return users
 
-    return users
+
 @functions_router.post('/create_ticket')
 async def create_ticket(ticket: Ticket, token: str = Depends(get_current_user)):
     username = ticket.username
